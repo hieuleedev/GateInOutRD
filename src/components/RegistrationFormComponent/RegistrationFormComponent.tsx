@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User, Clock, Plus, Building } from "lucide-react";
 import EmployeeMultiSelect from '../../components/select/EmployeeMultiSelect';
 import { getAllFactory } from "../../services/factory.service";
+import { useAuthStore } from '../../store/auth.store';
 
 const RegistrationFormComponent = () => {
   const [formData, setFormData] = useState({
@@ -15,11 +16,25 @@ const RegistrationFormComponent = () => {
     colleagues: "",
     reason: "",
   });
+  const {user} = useAuthStore();
+  console.log("ủe",user);
   const [companions, setCompanions] = useState<number[]>([]);
   const fetchData = async ()=>{
     const result = await getAllFactory();
     console.log("re",result)
   }
+  useEffect(() => {
+  if (user) {
+    setFormData((prev) => ({
+      ...prev,
+      fullName: user.FullName || "",
+      employeeId: user.MSNV || "",
+      factory_id: user.Division || "",
+      department: user.department?.NameDept || "",
+    }));
+  }
+}, [user]);
+
   useEffect(()=>{
       fetchData();
   },[])
@@ -115,6 +130,7 @@ const RegistrationFormComponent = () => {
                   type="text"
                   name="fullName"
                   value={formData.fullName}
+                  disabled
                   onChange={handleChange}
                   placeholder="Nguyễn Văn A"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -128,6 +144,7 @@ const RegistrationFormComponent = () => {
                 <input
                   type="text"
                   name="employeeId"
+                  disabled
                   value={formData.employeeId}
                   onChange={handleChange}
                   placeholder="1504326"
@@ -144,6 +161,7 @@ const RegistrationFormComponent = () => {
                 <input
                   type="text"
                   name="factory_id"
+                  disabled
                   value={formData.factory_id}
                   onChange={handleChange}
                   placeholder="Kỹ sư"
@@ -158,6 +176,7 @@ const RegistrationFormComponent = () => {
                 <input
                   type="text"
                   name="department"
+                  disabled
                   value={formData.department}
                   onChange={handleChange}
                   placeholder="Phòng Quản trị dữ liệu"
