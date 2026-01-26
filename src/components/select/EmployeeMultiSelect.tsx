@@ -5,7 +5,7 @@ import React, { useState, useMemo } from 'react';
  */
 export interface Employee {
   id: number;
-  name: string;
+  FullName: string;
   code?: string;
   department?: string;
 }
@@ -34,7 +34,7 @@ const EmployeeMultiSelect: React.FC<EmployeeMultiSelectProps> = ({
   const filteredEmployees = useMemo<Employee[]>(() => {
     const q = search.toLowerCase();
     return employees.filter(e =>
-      e.name.toLowerCase().includes(q) ||
+      e.FullName.toLowerCase().includes(q) ||
       (e.code && e.code.toLowerCase().includes(q))
     );
   }, [search, employees]);
@@ -52,7 +52,7 @@ const EmployeeMultiSelect: React.FC<EmployeeMultiSelectProps> = ({
   const selectedNames = useMemo<string>(() => {
     return employees
       .filter(e => value.includes(e.id))
-      .map(e => e.name)
+      .map(e => e.FullName)
       .join(', ');
   }, [employees, value]);
 
@@ -110,7 +110,7 @@ const EmployeeMultiSelect: React.FC<EmployeeMultiSelectProps> = ({
                   className="mr-2"
                 />
                 <span className="text-sm text-gray-700">
-                  {emp.name}
+                  {emp.FullName}
                   {emp.code && (
                     <span className="text-gray-400"> ({emp.code})</span>
                   )}

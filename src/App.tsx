@@ -4,6 +4,7 @@ import VerificationCard from "./components/VerificationCard";
 import RegistrationFormComponent from "./components/RegistrationFormComponent/RegistrationFormComponent";
 import RequestListComponent from "./components/GateManagementList/RequestListComponent/RequestListComponent";
 import MainLayout from "./components/MainLayout/MainLayout";
+import HistoryGate from "./components/HistoryGate/HistoryGate";
 import tokenService from "./services/token.service";
 
 export default function App() {
@@ -20,6 +21,8 @@ export default function App() {
         <Route path="/verify" element={<VerificationCard />} />
         <Route path="/register" element={<RegistrationFormComponent />} />
         <Route path="/requests" element={<RequestListComponent />} />
+        <Route path="/history" element={<HistoryGate />} />
+        
       </Route>
 
       {/* default */}

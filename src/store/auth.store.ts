@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: true });
 
           const res = await loginApi({ username, password });
-
+          console.log("res",res)
           // 👉 LƯU LOCAL STORAGE THỦ CÔNG
           localStorage.setItem('token', res.token);
 

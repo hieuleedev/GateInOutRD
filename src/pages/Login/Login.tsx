@@ -57,7 +57,7 @@ const Login: React.FC = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="flex-1 px-4 py-2.5 bg-blue-50 rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                placeholder="Username"
+                placeholder="Mã số nhân viên"
               />
 
               <div className="relative">
