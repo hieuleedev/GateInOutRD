@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useAuthStore } from '../../store/auth.store';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,12 @@ const Login: React.FC = () => {
       // TODO: show toast / error message
     }
   };
+  console.log("token,",token)
+  useEffect(() => {
+    if (token) {
+      navigate('/requests');
+    }
+  }, [token]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br to-gray-100 flex items-center justify-center px-4">
