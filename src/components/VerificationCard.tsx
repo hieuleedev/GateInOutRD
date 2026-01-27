@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Building2, Shield, User, Clock } from "lucide-react";
+import { Building2, Shield, User, Clock,AlertTriangle } from "lucide-react";
 import { getCard } from "../services/card.service";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -22,6 +22,7 @@ const VerificationCard = () => {
     const fetchCard = async () => {
       try {
         const res = await getCard(code);
+        console.log("res", res);
         setData(res);
       } catch (err) {
         console.error("Lỗi truy vấn thẻ:", err);
@@ -37,13 +38,13 @@ const VerificationCard = () => {
     return <div className="text-center mt-20">Đang xác thực...</div>;
   }
 
-  if (!data?.allowed) {
-    return (
-      <div className="text-center mt-20 text-red-600 font-bold">
-        Không có quyền ra vào
-      </div>
-    );
-  }
+  // if (!data?.allowed) {
+  //   return (
+  //     <div className="text-center mt-20 text-red-600 font-bold">
+  //       Không có quyền ra vào
+  //     </div>
+  //   );
+  // }
 
   const request = data.access_request;
   const user = request.user;
@@ -70,17 +71,50 @@ const VerificationCard = () => {
             </div>
 
             {/* STATUS */}
-            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg py-2 px-4 mb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-white" />
-                  <div className="text-white text-sm font-bold">ĐƯỢC PHÉP</div>
+            <>
+              {/* BLOCK TRẠNG THÁI */}
+              {data?.allowed ? (
+                <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg py-2 px-4 mb-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-white" />
+                      <div className="text-white text-sm font-bold">
+                        ĐƯỢC PHÉP
+                      </div>
+                    </div>
+                    <div className="bg-green-700 text-white text-[10px] px-2 py-1 rounded">
+                      ACTIVE
+                    </div>
+                  </div>
                 </div>
-                <div className="bg-green-700 text-white text-[10px] px-2 py-1 rounded">
-                  ACTIVE
+              ) : (
+                <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-lg py-2 px-4 mb-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-white" />
+                      <div className="text-white text-sm font-bold">
+                        KHÔNG ĐƯỢC PHÉP
+                      </div>
+                    </div>
+                    <div className="bg-red-700 text-white text-[10px] px-2 py-1 rounded">
+                      NO ACTIVE
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              )}
+
+              {/* BLOCK NOTE – PHẢI TÁCH RIÊNG */}
+              {data?.note && (
+                <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg py-2 px-4 mb-4">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-white" />
+                    <div className="text-white text-xs font-semibold">
+                      {data.note}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
 
             {/* AVATAR GRID */}
             <div className="grid grid-cols-3 gap-2 mb-4">
@@ -100,7 +134,9 @@ const VerificationCard = () => {
                 <div key={c.id} className="aspect-square">
                   <div className="rounded-lg overflow-hidden border h-full">
                     <img
-                      src={`${import.meta.env.VITE_API_URL}/files/${c.user.Avatar}`}
+                      src={`${import.meta.env.VITE_API_URL}/files/${
+                        c.user.Avatar
+                      }`}
                       alt={c.user.FullName}
                       className="w-full h-full object-cover"
                     />

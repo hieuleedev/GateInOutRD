@@ -18,17 +18,14 @@ const Login: React.FC = () => {
     try {
       await login(username, password);
 
-      // ✅ login OK → chuyển trang
-      if(token){
-        navigate('/requests');
-      }
+      // ✅ login OK → chuyển tran
       
     } catch (error) {
       console.error('Login failed', error);
       // TODO: show toast / error message
     }
   };
-  console.log("token,",token)
+  
   useEffect(() => {
     if (token) {
       navigate('/requests');

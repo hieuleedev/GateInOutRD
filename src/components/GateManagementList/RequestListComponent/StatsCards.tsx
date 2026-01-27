@@ -208,15 +208,18 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
                         </div>
 
                         {a.comment && (
-                          <div
-                            className="absolute -top-2 -right-6
-                                      bg-red-600 text-white text-[10px]
-                                      px-1.5 py-0.5 rounded shadow
-                                      max-w-[120px] truncate"
-                          >
-                            {a.comment}
-                          </div>
-                        )}
+                        <div
+                          className="
+                            absolute -top-2 left-full ml-2
+                            bg-red-600 text-white text-[10px]
+                            px-2 py-0.5 rounded shadow
+                            whitespace-nowrap
+                            z-50
+                          "
+                        >
+                          {a.comment}
+                        </div>
+                      )}
                       </div>
 
                       <span className="text-sm font-medium whitespace-nowrap">
