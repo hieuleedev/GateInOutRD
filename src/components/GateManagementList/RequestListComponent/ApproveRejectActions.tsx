@@ -14,8 +14,11 @@ const ApproveRejectActions: React.FC<Props> = ({ requestId }) => {
     rejectAccessRequest,
     loading,
     success,
+    error,
     reset
   } = useAccessRequestStore();
+  const [actionType, setActionType] =
+  useState<'approve' | 'reject' | null>(null);
 
   const [showApprove, setShowApprove] = useState(false);
   const [showReject, setShowReject] = useState(false);
@@ -23,18 +26,20 @@ const ApproveRejectActions: React.FC<Props> = ({ requestId }) => {
 
   /* ===== HANDLERS ===== */
   const handleApprove = async () => {
+    setActionType('approve');
     await approveAccessRequest(requestId);
     setShowApprove(false);
   };
-
-
-
+  
   const handleReject = async () => {
     if (!rejectReason.trim()) return;
-    await rejectAccessRequest(requestId);
+    setActionType('reject');
+    await rejectAccessRequest(requestId, rejectReason);
     setRejectReason('');
     setShowReject(false);
   };
+  
+  
 
   return (
     <>
@@ -126,6 +131,56 @@ const ApproveRejectActions: React.FC<Props> = ({ requestId }) => {
           </div>
         </Modal>
       )}
+{(success || error) && (
+  <Modal>
+    <div className="text-center space-y-4">
+      {/* ICON */}
+      <div
+        className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto
+        ${success ? 'bg-green-100' : 'bg-red-100'}`}
+      >
+        {success ? (
+          <CheckCircle className="text-green-600 w-6 h-6" />
+        ) : (
+          <XCircle className="text-red-600 w-6 h-6" />
+        )}
+      </div>
+
+      {/* TITLE */}
+      <h3 className="text-lg font-bold">
+        {success
+          ? actionType === 'approve'
+            ? 'Phê duyệt thành công'
+            : 'Từ chối thành công'
+          : 'Thao tác thất bại'}
+      </h3>
+
+      {/* MESSAGE */}
+      <p className="text-sm text-gray-600">
+        {success
+          ? actionType === 'approve'
+            ? 'Yêu cầu đã được phê duyệt.'
+            : 'Yêu cầu đã bị từ chối.'
+          : error}
+      </p>
+
+      {/* BUTTON */}
+      <div className="flex justify-center">
+        <button
+          onClick={() => {
+            reset();
+            setActionType(null);
+          }}
+          className={`px-4 py-2 rounded-lg text-white
+          ${success ? 'bg-green-500' : 'bg-red-500'}`}
+        >
+          Đóng
+        </button>
+      </div>
+    </div>
+  </Modal>
+)}
+
     </>
   );
 };

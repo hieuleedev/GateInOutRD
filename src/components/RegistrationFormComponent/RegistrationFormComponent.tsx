@@ -6,6 +6,7 @@ import { useAuthStore } from '../../store/auth.store';
 import { getUsersInMyDepartment } from "../../services/user.service";
 import type { Factory } from '@/services/factory.service';
 import {useAccessRequestStore} from '../../store/accessRequest.store'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -38,7 +39,8 @@ interface FactoryListResponse {
 
 const RegistrationFormComponent: React.FC = () => {
   const {user} = useAuthStore();
-  const {createAccessRequest,getAccessRequestsByApprover} = useAccessRequestStore();
+  const navigate = useNavigate();
+  const {createAccessRequest,getAccessRequestsByApprover, regisError,regisSucces} = useAccessRequestStore();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     employeeId: "",
@@ -79,11 +81,19 @@ const RegistrationFormComponent: React.FC = () => {
   }, [user]);
 
 
-  const handleSubmit = (): void => {
-    createAccessRequest(formData);
-    console.log("Form submitted:", formData);
-    alert("Đơn đăng ký đã được gửi thành công!");
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      const res = await createAccessRequest(formData);
+
+      alert(res.data.message || "Tạo yêu cầu thành công ✅");
+      navigate('/requests')
+      
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Có lỗi xảy ra ❌");
+    }
   };
+  
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;

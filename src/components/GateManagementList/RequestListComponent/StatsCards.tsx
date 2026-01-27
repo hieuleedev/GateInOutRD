@@ -34,6 +34,7 @@ type Approval = {
   approver_id: number;
   decision: 'PENDING' | 'APPROVED' | 'REJECTED' | null;
   approver: User;
+  comment: string;
 };
 
 type Request = {
@@ -198,20 +199,36 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
                   };
 
                   return (
-                    <div key={a.id} className="flex items-center gap-2">
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${styleMap[status]}`}
-                      >
-                        {index + 1}
+                    <div key={a.id} className="flex items-center gap-2 relative">
+                      <div className="relative flex items-center">
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${styleMap[status]}`}
+                        >
+                          {index + 1}
+                        </div>
+
+                        {a.comment && (
+                          <div
+                            className="absolute -top-2 -right-6
+                                      bg-red-600 text-white text-[10px]
+                                      px-1.5 py-0.5 rounded shadow
+                                      max-w-[120px] truncate"
+                          >
+                            {a.comment}
+                          </div>
+                        )}
                       </div>
-                      <span className="text-sm font-medium">
+
+                      <span className="text-sm font-medium whitespace-nowrap">
                         {a.approver.FullName}
                       </span>
 
+                      {/* 👉 DẤU GẠCH NỐI */}
                       {index < sortedApprovals.length - 1 && (
                         <div className="w-6 h-[2px] bg-gray-300 mx-1" />
                       )}
                     </div>
+
                   );
                 })}
               </div>

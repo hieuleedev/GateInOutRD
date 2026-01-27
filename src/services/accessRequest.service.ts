@@ -38,9 +38,23 @@ export const approveAccessRequestApi = (requestId: number) => {
   );
 };
 
-/* ===== REJECT ===== */
-export const rejectAccessRequestApi = (requestId: number) => {
-  return api.post(
-    `access-requests/${requestId}/reject`
+export const getAllAccessHistoryApi = () => {
+  return api.get(
+    `access-requests/history/all`
   );
 };
+
+
+/* ===== REJECT ===== */
+export const rejectAccessRequestApi = (
+  requestId: number,
+  reason: string
+) => {
+  return api.post(
+    `access-requests/${requestId}/reject`,
+    {
+      reason
+    }
+  );
+};
+

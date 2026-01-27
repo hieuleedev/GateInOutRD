@@ -9,7 +9,6 @@ import tokenService from "./services/token.service";
 
 export default function App() {
   const token = tokenService.getToken();
-  console.log("token", token);
 
   return (
     <Routes>
@@ -22,6 +21,7 @@ export default function App() {
         <Route path="/register" element={<RegistrationFormComponent />} />
         <Route path="/requests" element={<RequestListComponent />} />
         <Route path="/history" element={<HistoryGate />} />
+        <Route path="/gate/:code" element={<VerificationCard />} />
         
       </Route>
 
