@@ -6,6 +6,7 @@ import RequestListComponent from "./components/GateManagementList/RequestListCom
 import MainLayout from "./components/MainLayout/MainLayout";
 import HistoryGate from "./components/HistoryGate/HistoryGate";
 import tokenService from "./services/token.service";
+import RequestDetail from "./components/access-request-detail/RequestDetail";
 
 export default function App() {
   const token = tokenService.getToken();
@@ -15,14 +16,18 @@ export default function App() {
       {/* Public */}
       <Route path="/login" element={<Login />} />
 
-      {/* Protected layout */}
-      <Route element={token ? <MainLayout /> : <Navigate to="/login" replace />}>
+      {/* ✅ Public – quét QR vào thẳng */}
+      <Route path="/gate/:code" element={<VerificationCard />} />
+
+      {/* Protected */}
+      <Route
+        element={token ? <MainLayout /> : <Navigate to="/login" replace />}
+      >
         <Route path="/verify" element={<VerificationCard />} />
         <Route path="/register" element={<RegistrationFormComponent />} />
         <Route path="/requests" element={<RequestListComponent />} />
         <Route path="/history" element={<HistoryGate />} />
-        <Route path="/gate/:code" element={<VerificationCard />} />
-        
+        <Route path="/access-request/:id" element={<RequestDetail/>} />
       </Route>
 
       {/* default */}

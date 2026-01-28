@@ -32,6 +32,13 @@ export const getAccessRequestsByApproverApi = () => {
   );
 };
 
+export const getAccessRequestsdetailApi = (id: number) => {
+  return api.get<any>('/access-requests', {
+    params: { id },
+  });
+};
+
+
 export const approveAccessRequestApi = (requestId: number) => {
   return api.post(
     `access-requests/${requestId}/approve`

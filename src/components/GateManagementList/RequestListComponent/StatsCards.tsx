@@ -11,6 +11,7 @@ type User = {
   FullName: string;
   MSNV:string,
   Division: string,
+  department:any
 };
 
 type Factory = {
@@ -112,6 +113,14 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
         const sortedApprovals = [...req.approvals].sort(
           (a, b) => a.id - b.id
         );
+        const currentApproval = sortedApprovals.find(
+          a => a.decision === 'PENDING'
+        );
+        const isMyTurn =
+        currentApproval?.approver_id === user?.id &&
+        req.status === 'PENDING';
+       
+       
 
         return (
           <div
@@ -146,12 +155,12 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Briefcase className="w-4 h-4" />
-                <span>Nhà máy: {req.factory.factory_name}</span>
+                <span>Phòng ban: {req.user.department?.NameDept}</span>
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <MapPin className="w-4 h-4" />
-                <span>Mã NM: {req.factory.factory_code}</span>
+                <span>Đơn vị tác nghiệp: {req.factory.factory_name}</span>
               </div>
 
               <div className="flex items-center gap-2 text-sm">
@@ -262,7 +271,9 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
                   <XCircle className="w-5 h-5" />
                 </button>
               </div> */}
-              <ApproveRejectActions requestId={req.id}/>
+              {isMyTurn && (
+                <ApproveRejectActions requestId={req.id} />
+              )}
             </div>
           </div>
         );

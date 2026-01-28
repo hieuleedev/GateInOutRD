@@ -7,6 +7,8 @@ import { getUsersInMyDepartment } from "../../services/user.service";
 import type { Factory } from '@/services/factory.service';
 import {useAccessRequestStore} from '../../store/accessRequest.store'
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+
 
 
 
@@ -153,6 +155,7 @@ const RegistrationFormComponent: React.FC = () => {
                 type="text"
                 name="fullName"
                 value={formData.fullName}
+                disabled
                 onChange={handleChange}
                 className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                 placeholder="Nhập họ và tên"
@@ -166,6 +169,7 @@ const RegistrationFormComponent: React.FC = () => {
                 type="text"
                 name="employeeId"
                 value={formData.employeeId}
+                disabled
                 onChange={handleChange}
                 className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                 placeholder="Nhập mã số"
@@ -178,6 +182,7 @@ const RegistrationFormComponent: React.FC = () => {
               <input
                 type="text"
                 name="division"
+                disabled
                 value={formData.division}
                 onChange={handleChange}
                 className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
@@ -191,6 +196,7 @@ const RegistrationFormComponent: React.FC = () => {
               <input
                 type="text"
                 name="workUnit"
+                disabled
                 value={formData.department}
                 onChange={handleChange}
                 className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
@@ -203,7 +209,7 @@ const RegistrationFormComponent: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Đơn vị tác nghiệp *
             </label>
-            <select
+            {/* <select
               name="factory_id"
               value={formData.factory_id}
               onChange={handleChange}
@@ -215,7 +221,46 @@ const RegistrationFormComponent: React.FC = () => {
                   {factory.factory_name}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Đơn vị tác nghiệp *
+          </label>
+
+            <Select
+              placeholder="-- Chọn đơn vị tác nghiệp --"
+              options={factory.map((f) => ({
+                value: String(f.id),
+                label: f.factory_name,
+              }))}
+              value={
+                formData.factory_id
+                  ? {
+                      value: formData.factory_id,
+                      label:
+                        factory.find((f) => String(f.id) === formData.factory_id)
+                          ?.factory_name || "",
+                    }
+                  : null
+              }
+              onChange={(option) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  factory_id: option?.value || "",
+                }));
+              }}
+              isSearchable
+              styles={{
+                menu: (base) => ({
+                  ...base,
+                  maxHeight: 220,
+                  overflowY: "auto",
+                  zIndex: 50,
+                }),
+              }}
+            />
+          </div>
+
           </div>
         </div>
 
@@ -228,7 +273,7 @@ const RegistrationFormComponent: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Thời gian vào *
+                Thời gian ra *
               </label>
               <input
                 type="datetime-local"
@@ -240,7 +285,7 @@ const RegistrationFormComponent: React.FC = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Thời gian ra *
+                Thời gian vào *
               </label>
               <input
                 type="datetime-local"
