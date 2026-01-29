@@ -120,7 +120,26 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
         currentApproval?.approver_id === user?.id &&
         req.status === 'PENDING';
        
-       
+        const totalSteps = sortedApprovals.length;
+
+        const displayStatusText = (() => {
+          // Nếu bị từ chối/đã duyệt thì giữ nguyên
+          if (req.status === 'APPROVED') return 'Đã duyệt';
+          if (req.status === 'REJECTED') return 'Từ chối';
+        
+          // Nếu đang pending
+          if (req.status === 'PENDING') {
+            // 3 bước: bước 1-2 là xem xét
+            if (totalSteps === 3) {
+              return 'Đang xem xét';
+            }
+            // các trường hợp còn lại vẫn là chờ duyệt
+            return 'Chờ duyệt';
+          }
+        
+          return statusText[req.status];
+        })();
+        
 
         return (
           <div
@@ -146,7 +165,7 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor[req.status]}`}
               >
-                {statusText[req.status]}
+                {displayStatusText}
               </span>
 
             </div>
@@ -193,6 +212,7 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
 
               <div className="flex items-center gap-4 flex-wrap">
                 {sortedApprovals.map((a, index) => {
+                 
                   const status = getApprovalStatus(
                     a,
                     index,

@@ -7,6 +7,7 @@ import MainLayout from "./components/MainLayout/MainLayout";
 import HistoryGate from "./components/HistoryGate/HistoryGate";
 import tokenService from "./services/token.service";
 import RequestDetail from "./components/access-request-detail/RequestDetail";
+import QRLinkGenerator from "./components/QRLinkGenerator/QRLinkGenerator"
 
 export default function App() {
   const token = tokenService.getToken();
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/register" element={<RegistrationFormComponent />} />
         <Route path="/requests" element={<RequestListComponent />} />
         <Route path="/history" element={<HistoryGate />} />
+        <Route path="/qr" element={<QRLinkGenerator />} />
         <Route path="/access-requests/:id" element={<RequestDetail/>} />
       </Route>
 
