@@ -45,6 +45,11 @@ export const approveAccessRequestApi = (requestId: number) => {
   );
 };
 
+export const extraApproveAccessRequestApi = (requestId: number) => {
+  return api.post(`access-requests/${requestId}/extra-approve`);
+};
+
+
 export const getAllAccessHistoryApi = () => {
   return api.get(
     `access-requests/history/all`

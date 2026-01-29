@@ -45,11 +45,11 @@ const VerificationCard = () => {
   //     </div>
   //   );
   // }
-
+  
   const request = data.access_request;
   const user = request.user;
   const companions = request.companions || [];
-
+  const isExtraApproved = request.extra_approval_required === true;
   const workTime = `${formatTime(request.planned_out_time)} – ${formatTime(
     request.planned_in_time
   )}`;
@@ -73,7 +73,7 @@ const VerificationCard = () => {
             {/* STATUS */}
             <>
               {/* BLOCK TRẠNG THÁI */}
-              {data?.allowed ? (
+              {data?.allowed || isExtraApproved ?(
                 <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg py-2 px-4 mb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ const VerificationCard = () => {
                       </div>
                     </div>
                     <div className="bg-green-700 text-white text-[10px] px-2 py-1 rounded">
-                      ACTIVE
+                    {isExtraApproved ? "ĐÃ DUYỆT LẠI" : "ACTIVE"}
                     </div>
                   </div>
                 </div>

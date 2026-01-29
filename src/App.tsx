@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/register" element={<RegistrationFormComponent />} />
         <Route path="/requests" element={<RequestListComponent />} />
         <Route path="/history" element={<HistoryGate />} />
-        <Route path="/access-request/:id" element={<RequestDetail/>} />
+        <Route path="/access-requests/:id" element={<RequestDetail/>} />
       </Route>
 
       {/* default */}

@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Clock, MapPin, Briefcase, ArrowLeft } from "lucide-react";
 import { useAccessRequestStore } from "../../store/accessRequest.store";
 import { useAuthStore } from "../../store/auth.store";
+import {extraApproveAccessRequestApi} from "../../services/accessRequest.service"
 import ApproveRejectActions from "../../components/GateManagementList/RequestListComponent/ApproveRejectActions";
+
 
 type User = {
   id: number;
@@ -50,6 +52,7 @@ type Request = {
   factory: Factory;
   MSNV: string;
   card: Card;
+  extra_approval_required: boolean;
   companions: Companion[];
   approvals: Approval[];
 };
@@ -89,6 +92,7 @@ const RequestDetail: React.FC = () => {
   }, [accessRequests, id]);
 
   const req = item?.request;
+  console.log("req",req?.extra_approval_required)
 
   const getApprovalStatus = (
     approval: Approval,
@@ -110,6 +114,29 @@ const RequestDetail: React.FC = () => {
       </div>
     );
   }
+  const handleExtraApprove = async () => {
+    try {
+      const res:any = await extraApproveAccessRequestApi(req.id);
+  
+      alert(res.message || "Duyệt lại thành công");
+  
+      // ✅ fetch lại list để cập nhật req.extra_approval_required
+      await getAccessRequestsByApprover();
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Duyệt lại thất bại");
+    }
+  };
+  
+
+  const now = Date.now();
+
+  const outTime = new Date(req.planned_out_time).getTime();
+  const inTime = new Date(req.planned_in_time).getTime();
+
+  const validFrom = outTime - 5 * 60 * 1000;  // sớm hơn 5 phút
+  const validTo = inTime + 10 * 60 * 1000;    // trễ hơn 10 phút
+
+  const isValidTimeWindow = now >= validFrom && now <= validTo;
 
   const sortedApprovals = [...req.approvals].sort((a, b) => a.id - b.id);
 
@@ -157,7 +184,7 @@ const RequestDetail: React.FC = () => {
             <span
               className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor[req.status]}`}
             >
-              {statusText[req.status]}
+              {`${statusText[req.status]} ${req.extra_approval_required === true ? "(bổ sung)" : ""}`}
             </span>
           </div>
 
@@ -264,7 +291,16 @@ const RequestDetail: React.FC = () => {
               Ngày tạo: {new Date(req.createdAt).toLocaleString("vi-VN")}
             </div>
 
-            {isMyTurn && <ApproveRejectActions requestId={req.id} />}
+            {!isValidTimeWindow &&
+                req.extra_approval_required === false && (
+                    <button
+                    onClick={handleExtraApprove}
+                    className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition"
+                    >
+                    Duyệt lại
+                    </button>
+                )}
+
           </div>
         </div>
       </div>
