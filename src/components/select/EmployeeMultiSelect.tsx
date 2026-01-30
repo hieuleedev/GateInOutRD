@@ -25,7 +25,7 @@ const EmployeeMultiSelect: React.FC<EmployeeMultiSelectProps> = ({
   employees = [],
   value = [],
   onChange,
-  placeholder = 'Tìm theo tên hoặc mã nhân viên...',
+  placeholder = 'Tìm theo tên...',
   disabled = false
 }) => {
   const [search, setSearch] = useState<string>('');

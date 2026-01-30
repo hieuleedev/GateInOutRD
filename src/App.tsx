@@ -6,12 +6,19 @@ import RequestListComponent from "./components/GateManagementList/RequestListCom
 import MainLayout from "./components/MainLayout/MainLayout";
 import HistoryGate from "./components/HistoryGate/HistoryGate";
 import tokenService from "./services/token.service";
+import { useAuthStore } from "./store/auth.store";
 import RequestDetail from "./components/access-request-detail/RequestDetail";
 import QRLinkGenerator from "./components/QRLinkGenerator/QRLinkGenerator"
-
+export interface AuthState {
+  user?: any;
+  token?: string | null;
+  loading: boolean;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+}
 export default function App() {
-  const token = tokenService.getToken();
-
+  
+  const token = useAuthStore((s: AuthState) => s.token);
   return (
     <Routes>
       {/* Public */}

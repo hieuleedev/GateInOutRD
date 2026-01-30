@@ -1,113 +1,142 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useAuthStore } from '../../store/auth.store';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-  const { login ,token} = useAuthStore();
+  const { login, token } = useAuthStore();
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [domain, setDomain] = useState('Msnv');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const domains = ['Msnv', 'Mail'];
+  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       await login(username, password);
       navigate("/requests", { replace: true });
-      
-      
     } catch (error) {
       console.error('Login failed', error);
       // TODO: show toast / error message
     }
   };
-  
-  // useEffect(() => {
-  //   if (token) {
-  //     navigate('/requests');
-  //   }
-  // }, [token]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br to-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex">
         
-        {/* Left Side */}
-        <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-500 to-blue-400 p-8 flex-col justify-center text-white">
-          <h1 className="text-3xl font-light mb-3 tracking-wide">
-            Đăng nhập
-          </h1>
-          <p className="text-sm opacity-95 mb-6">
-            Trung Tâm R&D Ô Tô
-          </p>
+        {/* Left Side - Phần màu xanh (ẩn trên mobile) */}
+        <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-blue-500 to-blue-400 p-10 flex-col justify-between text-white">
+          <div>
+            <h1 className="text-4xl font-light mb-4 tracking-wide">
+              Đăng nhập
+            </h1>
+            <p className="text-base opacity-95">
+              Trung Tâm R&D Ô Tô
+            </p>
+          </div>
 
-          <div className="mt-auto text-2xl font-bold tracking-wider">
+          <div className="text-3xl font-bold tracking-wider">
             THACO AUTO
           </div>
         </div>
 
-        {/* Right Side */}
-        <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-center">
-          <form onSubmit={handleLogin} className="space-y-5">
-            
-            <div className="flex flex-col sm:flex-row gap-2">
+        {/* Right Side - Form đăng nhập */}
+        <div className="w-full lg:w-3/5 p-8 sm:p-12">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+              TRUNG TÂM R&D Ô TÔ
+            </h2>
+            <p className="text-sm text-gray-500">
+              Hệ thống đăng ký ra vào cổng 
+            </p>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-2xl sm:text-3xl font-bold text-blue-900 text-center mb-8">
+            ĐĂNG NHẬP
+          </h3>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            {/* Tên đăng nhập */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tên đăng nhập
+              </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 px-4 py-2.5 bg-blue-50 rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                placeholder="Mã số nhân viên"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Vui lòng nhập Mã số nhân viên"
               />
-
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="w-full sm:w-auto px-4 py-2.5 bg-blue-50 rounded text-gray-600 flex items-center justify-between gap-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  {domain}
-                  <ChevronDown size={14} />
-                </button>
-
-                {showDropdown && (
-                  <div className="absolute top-full mt-1 right-0 w-full bg-white border border-gray-200 rounded shadow-lg z-10">
-                    {domains.map((d) => (
-                      <button
-                        key={d}
-                        type="button"
-                        onClick={() => {
-                          setDomain(d);
-                          setShowDropdown(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700"
-                      >
-                        {d}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
 
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 bg-blue-50 rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              placeholder="••••••••••••"
-            />
+            {/* Mật khẩu */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Mật khẩu
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="••••••••"
+              />
+            </div>
 
+            {/* Checkbox và Quên mật khẩu */}
+            <div className="flex items-center justify-between">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <span className="ml-2 text-sm text-gray-600">
+                  Ghi nhớ đăng nhập
+                </span>
+              </label>
+            </div>
+
+            {/* Button Đăng nhập */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white px-6 py-2.5 rounded hover:bg-blue-700 transition-colors font-medium shadow-md"
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md"
             >
-              Đăng nhập
+              ĐĂNG NHẬP
             </button>
+
+            {/* Quên mật khẩu */}
+            <div className="text-center">
+            <a
+              href="#"
+              className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              Quên mật khẩu?
+            </a>
+          </div>
+
           </form>
+
+          {/* Footer */}
+          <div className="mt-8 text-center text-xs text-gray-500">
+            <p>© 2026 (CÔNG TY) TRUNG TÂM R&D Ô TÔ</p>
+            <p className="mt-1">
+              Bảo mật thông tin • Liên hệ:{' '}
+              <a href="mailto:rd-cntt@thaco.com.vn" className="text-blue-600 hover:underline">
+                rd-cntt@thaco.com.vn
+              </a>
+            </p>
+          </div>
         </div>
 
       </div>
