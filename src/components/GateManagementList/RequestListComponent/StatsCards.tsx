@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Clock, MapPin, Briefcase, CheckCircle, XCircle } from 'lucide-react';
+import { Clock, MapPin, Briefcase, CheckCircle, XCircle,CreditCard } from 'lucide-react';
 import { useAccessRequestStore } from '../../../store/accessRequest.store';
 import { useAuthStore } from '../../../store/auth.store';
 import ApproveRejectActions from './ApproveRejectActions';
@@ -176,10 +176,10 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
                 <Briefcase className="w-4 h-4" />
                 <span>Phòng ban: {req.user.department?.NameDept}</span>
               </div>
-
+             
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <MapPin className="w-4 h-4" />
-                <span>Đơn vị tác nghiệp: {req.factory.factory_name}</span>
+                <span>Đơn vị tác nghiệp: {req?.factory?.factory_name}</span>
               </div>
 
               <div className="flex items-center gap-2 text-sm">
@@ -196,6 +196,10 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
                   Vào:{' '}
                   {new Date(req.planned_in_time).toLocaleString('vi-VN')}
                 </span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <CreditCard className="w-4 h-4" />
+                Số thẻ: {req?.card?.card_code?.slice(-1)}
               </div>
             </div>
 
