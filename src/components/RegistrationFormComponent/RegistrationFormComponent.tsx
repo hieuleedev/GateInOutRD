@@ -206,9 +206,6 @@ const RegistrationFormComponent: React.FC = () => {
           </div>
           
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Đơn vị tác nghiệp *
-            </label>
             {/* <select
               name="factory_id"
               value={formData.factory_id}
