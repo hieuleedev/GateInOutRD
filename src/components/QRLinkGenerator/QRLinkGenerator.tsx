@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { toPng } from "html-to-image";
 
-function isValidUrl(value: string) {
+function isValidUrl(value: string): boolean {
   try {
     const url = new URL(value);
     return url.protocol === "http:" || url.protocol === "https:";
@@ -11,26 +11,38 @@ function isValidUrl(value: string) {
   }
 }
 
-export default function QRLinkGenerator() {
+function getGateCodeFromUrl(urlStr: string): string {
+  try {
+    const url = new URL(urlStr);
+    const match = url.pathname.match(/\/gate\/([^\/]+)/); // /gate/{code}
+    return match?.[1] ?? "";
+  } catch {
+    return "";
+  }
+}
+
+export default function QRLinkGenerator(): React.ReactElement {
   const [link, setLink] = useState<string>("http://rdthaco.io.vn/gate/");
   const qrRef = useRef<HTMLDivElement | null>(null);
 
   const valid = useMemo(() => isValidUrl(link.trim()), [link]);
   const value = valid ? link.trim() : "";
 
-  const downloadPNG = async () => {
+  const downloadPNG = async (): Promise<void> => {
     if (!qrRef.current || !valid) return;
 
-    // render div thành png
     const dataUrl = await toPng(qrRef.current, {
       cacheBust: true,
-      pixelRatio: 3, // tăng chất lượng ảnh
+      pixelRatio: 3,
       backgroundColor: "#ffffff",
     });
 
+    const gateCode = getGateCodeFromUrl(link.trim());
+    const fileName = gateCode ? `qr-${gateCode}.png` : "qr-code.png";
+
     const a = document.createElement("a");
     a.href = dataUrl;
-    a.download = "qr-code.png";
+    a.download = fileName;
     a.click();
   };
 
@@ -53,7 +65,9 @@ export default function QRLinkGenerator() {
         </div>
 
         <div className="mt-5 space-y-2">
-          <label className="text-sm font-medium text-slate-800">Đường link</label>
+          <label className="text-sm font-medium text-slate-800">
+            Đường link
+          </label>
           <input
             value={link}
             onChange={(e) => setLink(e.target.value)}
@@ -66,6 +80,7 @@ export default function QRLinkGenerator() {
                 : "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-100",
             ].join(" ")}
           />
+
           {!valid && (
             <p className="text-xs text-rose-600">
               URL chưa hợp lệ (chỉ nhận http/https).
@@ -88,7 +103,6 @@ export default function QRLinkGenerator() {
               </span>
             </div>
 
-            {/* vùng sẽ convert sang PNG */}
             <div
               ref={qrRef}
               className="mt-3 flex items-center justify-center rounded-xl bg-white p-4"

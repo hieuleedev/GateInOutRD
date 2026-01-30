@@ -17,8 +17,8 @@ const Login: React.FC = () => {
 
     try {
       await login(username, password);
-
-      // ✅ login OK → chuyển tran
+      navigate("/requests", { replace: true });
+      
       
     } catch (error) {
       console.error('Login failed', error);
@@ -26,11 +26,11 @@ const Login: React.FC = () => {
     }
   };
   
-  useEffect(() => {
-    if (token) {
-      navigate('/requests');
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate('/requests');
+  //   }
+  // }, [token]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br to-gray-100 flex items-center justify-center px-4">
