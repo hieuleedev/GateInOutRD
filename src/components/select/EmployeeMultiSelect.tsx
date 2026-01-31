@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-
+import { useAuthStore } from "../../store/auth.store";
 /**
  * Types
  */
@@ -30,14 +30,18 @@ const EmployeeMultiSelect: React.FC<EmployeeMultiSelectProps> = ({
 }) => {
   const [search, setSearch] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
-
+  const {user} = useAuthStore()
   const filteredEmployees = useMemo<Employee[]>(() => {
     const q = search.toLowerCase();
-    return employees.filter(e =>
-      e.FullName.toLowerCase().includes(q) ||
-      (e.code && e.code.toLowerCase().includes(q))
-    );
-  }, [search, employees]);
+  
+    return employees
+      .filter(e => e.id !== user?.id) // ✅ loại bỏ user hiện tại
+      .filter(e =>
+        e.FullName.toLowerCase().includes(q) ||
+        (e.code && e.code.toLowerCase().includes(q))
+      );
+  }, [search, employees, user?.id]);
+  
 
   const toggle = (id: number) => {
     if (disabled) return;

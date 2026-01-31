@@ -83,7 +83,7 @@ const VerificationCard = () => {
                       </div>
                     </div>
                     <div className="bg-green-700 text-white text-[10px] px-2 py-1 rounded">
-                    {isExtraApproved ? "ĐÃ DUYỆT LẠI" : "ACTIVE"}
+                    {isExtraApproved ? "ĐÃ DUYỆT LẠI" : "Đã được duyệt "}
                     </div>
                   </div>
                 </div>
@@ -97,7 +97,7 @@ const VerificationCard = () => {
                       </div>
                     </div>
                     <div className="bg-red-700 text-white text-[10px] px-2 py-1 rounded">
-                      NO ACTIVE
+                        Chưa được duyệt 
                     </div>
                   </div>
                 </div>
@@ -225,6 +225,9 @@ const VerificationCard = () => {
               </div>
               <div>
                 <strong>Thời gian:</strong> {workTime}
+              </div>
+              <div>
+                <strong>Lí do:</strong> {request.reason}
               </div>
               <div>
                 <strong>Đi cùng:</strong>{" "}

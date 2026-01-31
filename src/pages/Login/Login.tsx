@@ -27,24 +27,38 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center px-5 py-8">
       <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex">
         
         {/* Left Side - Phần màu xanh (ẩn trên mobile) */}
         <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-blue-500 to-blue-400 p-10 flex-col justify-between text-white">
-          <div>
-            <h1 className="text-4xl font-light mb-4 tracking-wide">
-              Đăng nhập
-            </h1>
-            <p className="text-base opacity-95">
-              Trung Tâm R&D Ô Tô
-            </p>
-          </div>
-
-          <div className="text-3xl font-bold tracking-wider">
-            THACO AUTO
-          </div>
+  {/* Top */}
+        <div className="text-3xl font-bold tracking-wider text-center">
+          THACO AUTO
         </div>
+
+        {/* Middle */}
+        <div className="text-center">
+          <p className="text-3xl font-bold tracking-wider mb-3">
+            Trung Tâm R&D Ô Tô
+          </p>
+          <p className="text-lg font-medium opacity-95 leading-relaxed">
+            Chuyển dịch hoạt động doanh nghiệp lên môi trường số
+          </p>
+        </div>
+
+        {/* Bottom */}
+
+        <div>
+          <h1 className="text-4xl font-light mb-4 tracking-wide text-center">
+            Đăng nhập
+          </h1>
+          {/* <p className="text-base opacity-95 text-center">
+            Trung Tâm R&D Ô Tô
+          </p> */}
+        </div>
+      </div>
+
 
         {/* Right Side - Form đăng nhập */}
         <div className="w-full lg:w-3/5 p-8 sm:p-12">
