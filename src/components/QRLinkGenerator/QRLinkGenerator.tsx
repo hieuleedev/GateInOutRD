@@ -22,7 +22,7 @@ function getGateCodeFromUrl(urlStr: string): string {
 }
 
 export default function QRLinkGenerator(): React.ReactElement {
-  const [link, setLink] = useState<string>("http://rdthaco.io.vn/gate/");
+  const [link, setLink] = useState<string>("https://access.rdthaco.io.vn/gate/");
   const qrRef = useRef<HTMLDivElement | null>(null);
 
   const valid = useMemo(() => isValidUrl(link.trim()), [link]);
@@ -145,10 +145,6 @@ export default function QRLinkGenerator(): React.ReactElement {
           </div>
         </div>
       </div>
-
-      <p className="mt-4 text-center text-xs text-slate-500">
-        Tip: Dùng Next.js thì nhớ đặt component trong client component.
-      </p>
     </div>
   );
 }
