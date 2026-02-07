@@ -22,7 +22,7 @@ function getGateCodeFromUrl(urlStr: string): string {
 }
 
 export default function QRLinkGenerator(): React.ReactElement {
-  const [link, setLink] = useState<string>("https://access.rdthaco.io.vn/gate/");
+  const [link, setLink] = useState<string>("https://rdthaco.io.vn/gate/");
   const qrRef = useRef<HTMLDivElement | null>(null);
 
   const valid = useMemo(() => isValidUrl(link.trim()), [link]);

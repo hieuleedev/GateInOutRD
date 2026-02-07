@@ -42,9 +42,6 @@ const Login: React.FC = () => {
           <p className="text-3xl font-bold tracking-wider mb-3">
             Trung Tâm R&D Ô Tô
           </p>
-          <p className="text-lg font-medium opacity-95 leading-relaxed">
-            Chuyển dịch hoạt động doanh nghiệp lên môi trường số
-          </p>
         </div>
 
         {/* Bottom */}

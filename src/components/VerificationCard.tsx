@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
 import { useParams } from "react-router-dom";
 import { Building2, Shield, User, Clock,AlertTriangle } from "lucide-react";
 import { getCard } from "../services/card.service";
@@ -18,14 +18,14 @@ const VerificationCard = () => {
 
   useEffect(() => {
     if (!code) return;
-
     const fetchCard = async () => {
       try {
         const res = await getCard(code);
         console.log("res", res);
         setData(res);
-      } catch (err) {
-        console.error("Lỗi truy vấn thẻ:", err);
+      } catch (err:any) {
+        console.error("Lỗi truy vấn thẻ:", err?.response?.data?.message );
+        alert(err?.response?.data?.message)
       } finally {
         setLoading(false);
       }
