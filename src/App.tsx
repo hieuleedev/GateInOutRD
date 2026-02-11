@@ -13,6 +13,7 @@ import QRLinkGenerator from "./components/QRLinkGenerator/QRLinkGenerator"
 import GateActivityMonitor from "./components/gate-activity-monitor/GateActivityMonitor";
 import { getFCMToken, onForegroundMessage } from "./lib/fcm";
 import { saveFcmToken } from "./services/fcmToken.service";
+import ProfilePage from "./pages/profile/ProfilePage";
 export interface AuthState {
   user?: any;
   token?: string | null;
@@ -72,6 +73,7 @@ export default function App() {
         element={token ? <MainLayout /> : <Navigate to="/login" replace />}
       >
         <Route path="/verify" element={<VerificationCard />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/register" element={<RegistrationFormComponent />} />
         <Route path="/requests" element={<RequestListComponent />} />
         <Route path="/history" element={<HistoryGate />} />

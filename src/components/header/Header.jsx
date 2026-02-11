@@ -49,6 +49,10 @@ const Header = () => {
     navigate("/history");
   };
 
+  const handleGoProfile = () => {
+    navigate("/profile");
+  };
+
   return (
     <header className="w-full h-16 bg-white border-b flex items-center px-4 md:px-6">
       {/* LEFT */}
@@ -135,7 +139,6 @@ const Header = () => {
               alt="User"
               className="h-8 w-8 rounded-full object-cover"
             />
-
             <div className="hidden md:flex flex-col leading-tight text-left">
               <span className="text-sm font-semibold text-gray-800">
                 {user?.FullName}
@@ -147,7 +150,7 @@ const Header = () => {
           {/* Dropdown */}
           {openMenu && (
             <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">
-              <div className="px-4 py-3 border-b">
+              <div className="px-4 py-3 border-b" onClick={handleGoProfile}>
                 <p className="text-sm font-medium text-gray-800">
                   {user?.FullName}
                 </p>

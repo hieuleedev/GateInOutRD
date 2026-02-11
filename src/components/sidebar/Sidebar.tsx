@@ -14,6 +14,7 @@ import {
   UserCheck,
 
 } from "lucide-react";
+import { useAuthStore } from "../../store/auth.store";
 import type { LucideIcon } from "lucide-react";
 interface MenuItem {
   label: string;
@@ -23,19 +24,20 @@ interface MenuItem {
 }
 
 const menus: MenuItem[] = [
-  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { label: "Quản lý ra vào công", path: "/monitor", icon: UserCheck, badge: 5 },
-  { label: "Lịch làm việc", path: "/schedule", icon: Calendar },
-  { label: "Đơn xin phép", path: "/applications", icon: FileText },
-  { label: "Nhân viên", path: "/users", icon: Users },
-  { label: "Nhà máy", path: "/factories", icon: Factory },
-  { label: "Phòng ban", path: "/departments", icon: Building2 },
-  { label: "Cài đặt", path: "/settings", icon: Settings },
+  { label: "Trang chủ", path: "/requests", icon: LayoutDashboard },
+  { label: "Lịch sử ra vào cổng", path: "/monitor", icon: UserCheck, badge: 5 },
+  // { label: "Lịch phòng họp", path: "/schedule", icon: Calendar },
+  // { label: "Đơn xin phép", path: "/applications", icon: FileText },
+  // { label: "Nhân viên", path: "/users", icon: Users },
+  // { label: "Nhà máy", path: "/factories", icon: Factory },
+  // { label: "Phòng ban", path: "/departments", icon: Building2 },
+  // { label: "Cài đặt", path: "/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
+  const { user} = useAuthStore();
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  console.log("user",user)
   return (
     <>
       {/* Sidebar */}
@@ -69,7 +71,7 @@ export default function Sidebar() {
           {/* Toggle Button */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="absolute -right-3 top-20 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors shadow-md"
+            className="absolute -right-3 top-15 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors shadow-md"
           >
             {isCollapsed ? (
               <ChevronRight className="w-4 h-4" />
