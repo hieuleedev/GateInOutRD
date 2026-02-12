@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import type { ChangeEvent, FormEvent } from "react";
+import { useAuthStore } from "../../store/auth.store";
 import { Upload, Camera, Lock, Eye, EyeOff, Check } from "lucide-react";
 
 interface Department {
@@ -20,22 +21,11 @@ interface User {
 }
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<User>({
-    id: 383,
-    Admin: 0,
-    Avatar: "avatar/Lê Trung Hiếu23103096.jpg",
-    Division: "Công Nghệ Thông Tin",
-    FullName: "Lê Trung Hiếu",
-    IDDepartment: 5,
-    IDPosition: 6,
-    MSNV: "23103096",
-    department: {
-      id: 5,
-      NameDept: "Phòng Quản trị dữ liệu",
-    },
-  });
+  const { user, logout } = useAuthStore();
+ 
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [formUser, setFormUser] = useState<User>(() => ({ ...user }));
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
@@ -54,13 +44,20 @@ export default function ProfilePage() {
   const API = import.meta.env.VITE_API_URL;
 
   const handleChange =
-    <K extends keyof User>(key: K) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      setUser((prev) => ({
-        ...prev,
-        [key]: e.target.value,
-      }));
-    };
+  <K extends keyof User>(key: K) =>
+  (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    let value: any = e.target.value;
+
+    if (key === "IDDepartment" || key === "IDPosition" || key === "Admin") {
+      value = Number(value);
+    }
+
+    setFormUser((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
 
   // Handle avatar upload
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
@@ -134,9 +131,7 @@ export default function ProfilePage() {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       };
-      console.log("CHANGE PASSWORD:", payload);
-
-      await new Promise((r) => setTimeout(r, 800));
+      console.log("CHANGE PASSWORD:", payload);     
       alert("Đổi mật khẩu thành công!");
       setPasswordData({
         currentPassword: "",

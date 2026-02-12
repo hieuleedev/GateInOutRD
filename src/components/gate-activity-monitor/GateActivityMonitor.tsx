@@ -48,12 +48,12 @@ const GateActivityMonitor: React.FC = () => {
   }, []);
 
   // Cập nhật thời gian real-time
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentTime(new Date());
+  //   }, 1000);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   // Format ngày hiện tại
   const formatCurrentDate = (): string => {
