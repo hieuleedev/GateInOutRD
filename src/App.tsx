@@ -66,12 +66,13 @@ export default function App() {
       <Route path="/login" element={<Login />} />
 
       {/* ✅ Public – quét QR vào thẳng */}
-      <Route path="/gate/:code" element={<VerificationCard />} />
+     
 
       {/* Protected */}
       <Route
         element={token ? <MainLayout /> : <Navigate to="/login" replace />}
       >
+         <Route path="/gate/:code" element={<VerificationCard />} />
         <Route path="/verify" element={<VerificationCard />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/register" element={<RegistrationFormComponent />} />

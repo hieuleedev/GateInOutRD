@@ -136,9 +136,7 @@ export default function Sidebar() {
               })}
             </ul>
           </nav>
-
-          {/* User Profile & Logout */}
-          <div className="border-t border-gray-200 p-3">
+          {/* <div className="border-t border-gray-200 p-3">
             {!isCollapsed && (
               <div className="flex items-center gap-3 px-3 py-2 mb-2">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
@@ -171,7 +169,7 @@ export default function Sidebar() {
               {!isCollapsed && (
                 <span className="font-medium text-sm">Đăng xuất</span>
               )}
-              {/* Tooltip for collapsed state */}
+              
               {isCollapsed && (
                 <div className="absolute left-full ml-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
                   Đăng xuất
@@ -179,7 +177,7 @@ export default function Sidebar() {
                 </div>
               )}
             </button>
-          </div>
+          </div> */}
         </div>
       </aside>
 
