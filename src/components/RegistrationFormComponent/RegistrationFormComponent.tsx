@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { User, Clock, Plus, Building } from "lucide-react";
 import EmployeeMultiSelect from "../select/EmployeeMultiSelect";
 import { getAllFactory } from "../../services/factory.service";
-import { useAuthStore } from '../../store/auth.store';
+import { useAuthStore } from "../../store/auth.store";
 import { getUsersInMyDepartment } from "../../services/user.service";
-import type { Factory } from '@/services/factory.service';
-import {useAccessRequestStore} from '../../store/accessRequest.store'
+import type { Factory } from "@/services/factory.service";
+import { useAccessRequestStore } from "../../store/accessRequest.store";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-
-
-
 
 interface FormData {
   fullName: string;
@@ -22,27 +19,29 @@ interface FormData {
   checkOutTime: string;
   colleagues: string;
   reason: string;
-  division: string,
-  companions:number[]
+  division: string;
+  companions: number[];
+  requestType: string;
 }
 
 interface Employee {
   id: number;
   FullName: string;
-
 }
-
-
 
 interface FactoryListResponse {
   data: Factory[];
 }
 
-
 const RegistrationFormComponent: React.FC = () => {
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
   const navigate = useNavigate();
-  const {createAccessRequest,getAccessRequestsByApprover, regisError,regisSucces} = useAccessRequestStore();
+  const {
+    createAccessRequest,
+    getAccessRequestsByApprover,
+    regisError,
+    regisSucces,
+  } = useAccessRequestStore();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     employeeId: "",
@@ -54,22 +53,33 @@ const RegistrationFormComponent: React.FC = () => {
     colleagues: "",
     reason: "",
     companions: [],
-    division: ""
+    division: "",
+    requestType: "",
   });
 
   //const [companions, setCompanions] = useState<number[]>([]);
   const [factory, setFactory] = useState<Factory[]>([]);
+  const requestTypeOptions = [
+    { value: "TAC_NGHIEP", label: "Tác nghiệp nhà máy" },
+    { value: "BAN_GIAO_XE", label: "Bàn giao xe xuất xưởng" },
+    { value: "XUAT_VAT_TU", label: "Xuất vật tư linh kiện hàng hóa" },
+    { value: "THU_NGHIEM_XE", label: "Thử nghiệm xe mẫu" },
+    { value: "DI_TRE", label: "Đi làm Trễ " },
+    { value: "VE_TRE", label: "Về Trễ" },
+  ];
+  const isDiTre = formData.requestType === "DI_TRE";
+  const isVeTre = formData.requestType === "VE_TRE";
   const [employees, setEmployees] = useState<Employee[]>([]);
   // Mock user data - thay thế bằng useAuthStore() của bạn
   const fetchData = async () => {
     const result: FactoryListResponse = await getAllFactory();
     setFactory(result.data);
     const res: any = await getUsersInMyDepartment();
-    setEmployees(res.data)
+    setEmployees(res.data);
   };
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-},[])
+  }, []);
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({
@@ -82,31 +92,33 @@ const RegistrationFormComponent: React.FC = () => {
     }
   }, [user]);
 
-
   const handleSubmit = async (): Promise<void> => {
     try {
       const res = await createAccessRequest(formData);
 
       alert(res.data.message || "Tạo yêu cầu thành công ✅");
-      navigate('/requests')
-      
+      navigate("/requests");
     } catch (err: any) {
       alert(err?.response?.data?.message || "Có lỗi xảy ra ❌");
     }
   };
-  
-  
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    console.log("formdata",formData)
+    console.log("formdata", formData);
   };
 
-  const handleCompanionChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+  const handleCompanionChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ): void => {
     const options = e.target.options;
     const selected: number[] = [];
     for (let i = 0; i < options.length; i++) {
@@ -114,10 +126,10 @@ const RegistrationFormComponent: React.FC = () => {
         selected.push(Number(options[i].value));
       }
     }
-   
+
     setFormData((prev) => ({
       ...prev,
-      colleagues: selected.join(', '),
+      colleagues: selected.join(", "),
     }));
   };
 
@@ -134,8 +146,12 @@ const RegistrationFormComponent: React.FC = () => {
               <Building className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold">Quản Lý Ra Vào Cổng</h1>
-              <p className="text-blue-100 text-sm sm:text-base">Trung tâm R&D Ô tô</p>
+              <h1 className="text-xl sm:text-2xl font-bold">
+                Quản Lý Ra Vào Cổng
+              </h1>
+              <p className="text-blue-100 text-sm sm:text-base">
+                Trung tâm R&D Ô tô
+              </p>
             </div>
           </div>
         </div>
@@ -204,7 +220,7 @@ const RegistrationFormComponent: React.FC = () => {
               />
             </div>
           </div>
-          
+
           <div className="mt-4">
             {/* <select
               name="factory_id"
@@ -220,49 +236,73 @@ const RegistrationFormComponent: React.FC = () => {
               ))}
             </select> */}
             <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Đơn vị tác nghiệp *
-          </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Đơn vị tác nghiệp *
+              </label>
 
-            <Select
-              placeholder="-- Chọn đơn vị tác nghiệp --"
-              options={factory.map((f) => ({
-                value: String(f.id),
-                label: f.factory_name,
-              }))}
-              value={
-                formData.factory_id
-                  ? {
-                      value: formData.factory_id,
-                      label:
-                        factory.find((f) => String(f.id) === formData.factory_id)
-                          ?.factory_name || "",
-                    }
-                  : null
-              }
-              onChange={(option) => {
-                setFormData((prev) => ({
-                  ...prev,
-                  factory_id: option?.value || "",
-                }));
-              }}
-              isSearchable
-              styles={{
-                menu: (base) => ({
-                  ...base,
-                  maxHeight: 220,
-                  overflowY: "auto",
-                  zIndex: 50,
-                }),
-              }}
-            />
-          </div>
+              <Select
+                placeholder="-- Chọn đơn vị tác nghiệp --"
+                options={factory.map((f) => ({
+                  value: String(f.id),
+                  label: f.factory_name,
+                }))}
+                value={
+                  formData.factory_id
+                    ? {
+                        value: formData.factory_id,
+                        label:
+                          factory.find(
+                            (f) => String(f.id) === formData.factory_id
+                          )?.factory_name || "",
+                      }
+                    : null
+                }
+                onChange={(option) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    factory_id: option?.value || "",
+                  }));
+                }}
+                isSearchable
+                styles={{
+                  menu: (base) => ({
+                    ...base,
+                    maxHeight: 220,
+                    overflowY: "auto",
+                    zIndex: 50,
+                  }),
+                }}
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Loại đơn ra vào cổng *
+              </label>
 
+              <Select
+                placeholder="-- Chọn loại đơn --"
+                options={requestTypeOptions}
+                value={
+                  formData.requestType
+                    ? requestTypeOptions.find(
+                        (opt) => opt.value === formData.requestType
+                      )
+                    : null
+                }
+                onChange={(option) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    requestType: option?.value || "",
+                  }))
+                }
+                isSearchable={false}
+              />
+            </div>
           </div>
         </div>
 
         {/* Time Information */}
-        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
+        {/* <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
           <h2 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-600" />
             Thời gian ra vào cổng
@@ -293,15 +333,88 @@ const RegistrationFormComponent: React.FC = () => {
               />
             </div>
           </div>
+        </div> */}
+
+        {/* Time Information */}
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
+          <h2 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-blue-600" />
+            Thời gian ra vào cổng
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* 👉 Nếu là Đi trễ → chỉ hiện giờ vào */}
+            {isDiTre && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Thời gian vào *
+                </label>
+                <input
+                  type="datetime-local"
+                  name="checkOutTime"
+                  value={formData.checkOutTime}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            )}
+
+            {/* 👉 Nếu là Về trễ → chỉ hiện giờ ra */}
+            {isVeTre && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Thời gian ra *
+                </label>
+                <input
+                  type="datetime-local"
+                  name="checkInTime"
+                  value={formData.checkInTime}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            )}
+
+            {/* 👉 Các loại khác → hiện cả 2 */}
+            {!isDiTre && !isVeTre && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Thời gian ra *
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="checkInTime"
+                    value={formData.checkInTime}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Thời gian vào *
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="checkOutTime"
+                    value={formData.checkOutTime}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Companions */}
-         <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
           <h2 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
             <User className="w-5 h-5 text-blue-600" />
             Nhân sự đi cùng
           </h2>
-          
+
           {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Danh sách nhân sự đi cùng (Tùy chọn)
@@ -315,15 +428,12 @@ const RegistrationFormComponent: React.FC = () => {
               ✓ Chỉ chọn nhân sự đi cùng phòng ban
             </p>
           </div> */}
-              <EmployeeMultiSelect
-              employees={employees}
-              value={formData.companions}
-              onChange={(ids) =>
-                setFormData({ ...formData, companions: ids })
-              }
-        />
-
-        </div> 
+          <EmployeeMultiSelect
+            employees={employees}
+            value={formData.companions}
+            onChange={(ids) => setFormData({ ...formData, companions: ids })}
+          />
+        </div>
 
         {/* Reason */}
         <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
@@ -352,8 +462,7 @@ const RegistrationFormComponent: React.FC = () => {
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          className="w-full bg-blue-600 text-white py-3 sm:py-3.5 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm sm:text-base shadow-lg"
-        >
+          className="w-full bg-blue-600 text-white py-3 sm:py-3.5 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm sm:text-base shadow-lg">
           <Plus className="w-5 h-5" />
           Gửi đơn đăng ký
         </button>

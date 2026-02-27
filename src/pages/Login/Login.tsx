@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Login: React.FC = () => {
-  const { login, token } = useAuthStore();
+  const { login, token,message } = useAuthStore();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [domain, setDomain] = useState("Msnv");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [error, setError] = useState("")
   const [rememberMe, setRememberMe] = useState(false);
 
   const domains = ["Msnv", "Mail"];
@@ -31,7 +32,7 @@ const Login: React.FC = () => {
       navigate("/requests", { replace: true });
     } catch (error) {
       console.error("Login failed", error);
-      // TODO: show toast / error message
+      
     }
   };
 
@@ -68,11 +69,11 @@ const Login: React.FC = () => {
             />
 
             <h1 className="text-2xl font-bold leading-tight tracking-wide uppercase">
-              HỆ SINH THÁI SỐ QUẢN TRỊ DOANH NGHIỆP
+                HỆ THỐNG ĐĂNG KÍ RA VÀO CỔNG
             </h1>
 
             <p className="mt-40 text-sm opacity-90">
-              Công cụ tốt nhất để kiến tạo trải nghiệm số
+              
             </p>
           </div>
         </div>
@@ -84,9 +85,9 @@ const Login: React.FC = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
               TRUNG TÂM R&D Ô TÔ
             </h2>
-            <p className="text-sm text-gray-500">
+            {/* <p className="text-sm text-gray-500">
               Hệ thống đăng ký ra vào cổng
-            </p>
+            </p> */}
           </div>
 
           {/* Title */}
@@ -122,7 +123,11 @@ const Login: React.FC = () => {
                 placeholder="••••••••"
               />
             </div>
-
+            {message && (
+              <div className="text-red-500 mt-2">
+                {message}
+              </div>
+            )}
             {/* Checkbox và Quên mật khẩu */}
             <div className="flex items-center justify-between">
               <label className="flex items-center cursor-pointer">
