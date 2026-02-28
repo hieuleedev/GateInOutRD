@@ -151,7 +151,7 @@ const ApproveRejectActions: React.FC<Props> = ({ requestId }) => {
         {success
           ? actionType === 'approve'
             ? 'Phê duyệt thành công'
-            : 'Từ chối thành công'
+            : 'Phê duyệt thành công'
           : 'Thao tác thất bại'}
       </h3>
 
@@ -160,7 +160,7 @@ const ApproveRejectActions: React.FC<Props> = ({ requestId }) => {
         {success
           ? actionType === 'approve'
             ? 'Yêu cầu đã được phê duyệt.'
-            : 'Yêu cầu đã bị từ chối.'
+            : 'Yêu cầu đã được phê duyệt.'
           : error}
       </p>
 

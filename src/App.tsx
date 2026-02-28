@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import Login from "./pages/Login/Login";
 import VerificationCard from "./components/VerificationCard";
+import VerificationCardPrivate from "./components/verificationCardPrivate/VerificationCardPrivate";
 import RegistrationFormComponent from "./components/RegistrationFormComponent/RegistrationFormComponent";
 import RequestListComponent from "./components/GateManagementList/RequestListComponent/RequestListComponent";
 import MainLayout from "./components/MainLayout/MainLayout";
@@ -72,7 +73,8 @@ export default function App() {
       <Route
         element={token ? <MainLayout /> : <Navigate to="/login" replace />}
       >
-         <Route path="/gate/:code" element={<VerificationCard />} />
+        <Route path="/gate/:code" element={<VerificationCard />} />
+        <Route path="/la/:code" element={<VerificationCardPrivate />} />
         <Route path="/verify" element={<VerificationCard />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/register" element={<RegistrationFormComponent />} />

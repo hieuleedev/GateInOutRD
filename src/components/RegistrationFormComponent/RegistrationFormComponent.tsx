@@ -66,7 +66,13 @@ const RegistrationFormComponent: React.FC = () => {
     { value: "THU_NGHIEM_XE", label: "Thử nghiệm xe mẫu" },
     { value: "DI_TRE", label: "Đi làm Trễ " },
     { value: "VE_TRE", label: "Về Trễ" },
+    { value: "VE_SOM", label: "Về Sớm" },
+  
   ];
+  const isAttendanceRequest = 
+  formData.requestType === "DI_TRE" ||
+  formData.requestType === "VE_TRE" ||
+  formData.requestType === "VE_SOM";
   const isDiTre = formData.requestType === "DI_TRE";
   const isVeTre = formData.requestType === "VE_TRE";
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -237,6 +243,31 @@ const RegistrationFormComponent: React.FC = () => {
             </select> */}
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                Loại đơn ra vào cổng *
+              </label>
+
+              <Select
+                placeholder="-- Chọn loại đơn --"
+                options={requestTypeOptions}
+                value={
+                  formData.requestType
+                    ? requestTypeOptions.find(
+                        (opt) => opt.value === formData.requestType
+                      )
+                    : null
+                }
+                onChange={(option) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    requestType: option?.value || "",
+                  }))
+                }
+                isSearchable={false}
+              />
+            </div>
+            {!isAttendanceRequest && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Đơn vị tác nghiệp *
               </label>
 
@@ -274,30 +305,7 @@ const RegistrationFormComponent: React.FC = () => {
                 }}
               />
             </div>
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Loại đơn ra vào cổng *
-              </label>
-
-              <Select
-                placeholder="-- Chọn loại đơn --"
-                options={requestTypeOptions}
-                value={
-                  formData.requestType
-                    ? requestTypeOptions.find(
-                        (opt) => opt.value === formData.requestType
-                      )
-                    : null
-                }
-                onChange={(option) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    requestType: option?.value || "",
-                  }))
-                }
-                isSearchable={false}
-              />
-            </div>
+            )}
           </div>
         </div>
 
