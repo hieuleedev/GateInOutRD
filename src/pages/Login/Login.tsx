@@ -69,7 +69,7 @@ const Login: React.FC = () => {
             />
 
             <h1 className="text-2xl font-bold leading-tight tracking-wide uppercase">
-                HỆ THỐNG ĐĂNG KÍ RA VÀO CỔNG
+                HỆ THỐNG ĐĂNG KÍ  <br />RA VÀO CỔNG
             </h1>
 
             <p className="mt-40 text-sm opacity-90">
