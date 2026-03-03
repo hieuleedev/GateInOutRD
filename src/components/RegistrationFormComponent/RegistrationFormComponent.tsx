@@ -22,6 +22,7 @@ interface FormData {
   division: string;
   companions: number[];
   requestType: string;
+  material_note: string;
 }
 
 interface Employee {
@@ -55,12 +56,14 @@ const RegistrationFormComponent: React.FC = () => {
     companions: [],
     division: "",
     requestType: "",
+    material_note: "",
   });
 
   //const [companions, setCompanions] = useState<number[]>([]);
   const [factory, setFactory] = useState<Factory[]>([]);
   const requestTypeOptions = [
     { value: "TAC_NGHIEP", label: "Tác nghiệp nhà máy" },
+    { value: "TAC_NGHIEP_MANG_VAT_TU", label: "Tác nghiệp nhà máy mang theo vật tư" },
     { value: "BAN_GIAO_XE", label: "Bàn giao xe xuất xưởng" },
     { value: "XUAT_VAT_TU", label: "Xuất vật tư linh kiện hàng hóa" },
     { value: "THU_NGHIEM_XE", label: "Thử nghiệm xe mẫu" },
@@ -69,6 +72,7 @@ const RegistrationFormComponent: React.FC = () => {
     { value: "VE_SOM", label: "Về Sớm" },
   
   ];
+  const isMangVatTu = formData.requestType === "TAC_NGHIEP_MANG_VAT_TU";
   const isAttendanceRequest = 
   formData.requestType === "DI_TRE" ||
   formData.requestType === "VE_TRE" ||
@@ -466,6 +470,28 @@ const RegistrationFormComponent: React.FC = () => {
             </p>
           </div>
         </div>
+        {isMangVatTu && (
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4">
+          <h2 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
+            <Building className="w-5 h-5 text-blue-600" />
+            Ghi chú vật tư mang theo
+          </h2>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Nội dung vật tư *
+            </label>
+            <textarea
+              name="material_note"
+              value={formData.material_note}
+              onChange={handleChange}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              placeholder="Ví dụ: 2 laptop Dell, 1 bộ thiết bị test, linh kiện mẫu..."
+            />
+          </div>
+        </div>
+      )}
 
         {/* Submit Button */}
         <button

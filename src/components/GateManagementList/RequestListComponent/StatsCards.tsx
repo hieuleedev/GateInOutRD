@@ -60,6 +60,7 @@ type Request = {
   card: Card;
   companions: Companion[];
   approvals: Approval[];
+  material_note: string;
 };
 
 type AccessRequestItem = {
@@ -110,7 +111,7 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
     <div className="space-y-4">
       {filteredRequests.map((item) => {
         const req = item.request;
-
+        console.log("req",req)
         // ⚠️ FIX: sắp xếp approvals để không bị lộn
         const sortedApprovals = [...req.approvals].sort((a, b) => a.id - b.id);
         const currentApproval = sortedApprovals.find(
@@ -203,6 +204,13 @@ const StatsCards: React.FC<Props> = ({ activeTab }) => {
               )}
 
               {/* ✅ ẨN nếu không có mã thẻ */}
+              {req?.material_note && (
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <CreditCard className="w-4 h-4" />
+                  <span>Vật tư mang theo: {req.material_note}</span>
+                </div>
+              )}
+
               {req?.card?.card_code && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <CreditCard className="w-4 h-4" />

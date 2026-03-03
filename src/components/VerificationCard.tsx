@@ -229,6 +229,9 @@ const VerificationCard = () => {
               <div>
                 <strong>Lí do:</strong> {request.reason}
               </div>
+              {request?.material_note && (<div>
+                <strong>Vật tư mang theo:</strong> {request.material_note}
+              </div>)}
               <div>
                 <strong>Đi cùng:</strong>{" "}
                 {companions.map((c: any) => c.user.FullName).join(", ")}

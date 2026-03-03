@@ -155,11 +155,12 @@ const HistoryGate: React.FC = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="p-4 text-left">STT</th>
+                <th className="p-2 text-left">STT</th>
                 <th className="p-4 text-left">Họ & Tên</th>
-                <th className="p-4 text-left">MSNV</th>
+                <th className="p-3 text-left">MSNV</th>
                 <th className="p-4 text-left">Phòng Ban</th>
                 <th className="p-4 text-left">Người đi cùng</th>
+                <th className="p-4 text-left">Vật tư mang theo</th>
                 <th className="p-4 text-center">Đăng ký</th>
                 <th className="p-4 text-center">Lịch sử thực tế</th>
                 {/* <th className="p-4 text-center">Trạng thái</th> */}
@@ -213,6 +214,7 @@ const HistoryGate: React.FC = () => {
                         "--"
                       )}
                     </td>
+                    <td className="p-4">{item.material_note}</td>
 
                     <td className="p-4 text-sm">
                       <div>
